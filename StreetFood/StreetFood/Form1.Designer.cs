@@ -28,20 +28,188 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.optionsGroup = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.addressGroup = new System.Windows.Forms.GroupBox();
+            this.streetBox = new System.Windows.Forms.TextBox();
+            this.zipCodeLabel = new System.Windows.Forms.Label();
+            this.cityBox = new System.Windows.Forms.TextBox();
+            this.zipCodeBox = new System.Windows.Forms.TextBox();
+            this.cityLabel = new System.Windows.Forms.Label();
+            this.streetLabel = new System.Windows.Forms.Label();
+            this.searchButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.optionsGroup.SuspendLayout();
+            this.addressGroup.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.optionsGroup);
+            this.splitContainer1.Panel1.Controls.Add(this.addressGroup);
+            this.splitContainer1.Panel1.Controls.Add(this.searchButton);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+            this.splitContainer1.Size = new System.Drawing.Size(1119, 684);
+            this.splitContainer1.SplitterDistance = 254;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // optionsGroup
+            // 
+            this.optionsGroup.Controls.Add(this.label1);
+            this.optionsGroup.Controls.Add(this.progressBar1);
+            this.optionsGroup.Location = new System.Drawing.Point(12, 179);
+            this.optionsGroup.Name = "optionsGroup";
+            this.optionsGroup.Size = new System.Drawing.Size(233, 77);
+            this.optionsGroup.TabIndex = 8;
+            this.optionsGroup.TabStop = false;
+            this.optionsGroup.Text = "Options";
+            this.optionsGroup.Enter += new System.EventHandler(this.groupBox1_Enter_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Night mode";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.progressBar1.Location = new System.Drawing.Point(78, 19);
+            this.progressBar1.Maximum = 1;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.TabIndex = 0;
+            // 
+            // addressGroup
+            // 
+            this.addressGroup.Controls.Add(this.streetBox);
+            this.addressGroup.Controls.Add(this.zipCodeLabel);
+            this.addressGroup.Controls.Add(this.cityBox);
+            this.addressGroup.Controls.Add(this.zipCodeBox);
+            this.addressGroup.Controls.Add(this.cityLabel);
+            this.addressGroup.Controls.Add(this.streetLabel);
+            this.addressGroup.Location = new System.Drawing.Point(12, 12);
+            this.addressGroup.Name = "addressGroup";
+            this.addressGroup.Size = new System.Drawing.Size(233, 147);
+            this.addressGroup.TabIndex = 7;
+            this.addressGroup.TabStop = false;
+            this.addressGroup.Text = "Address";
+            this.addressGroup.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // streetBox
+            // 
+            this.streetBox.Location = new System.Drawing.Point(78, 66);
+            this.streetBox.Name = "streetBox";
+            this.streetBox.Size = new System.Drawing.Size(128, 20);
+            this.streetBox.TabIndex = 3;
+            this.streetBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // zipCodeLabel
+            // 
+            this.zipCodeLabel.AutoSize = true;
+            this.zipCodeLabel.Location = new System.Drawing.Point(11, 107);
+            this.zipCodeLabel.Name = "zipCodeLabel";
+            this.zipCodeLabel.Size = new System.Drawing.Size(49, 13);
+            this.zipCodeLabel.TabIndex = 6;
+            this.zipCodeLabel.Text = "Zip code";
+            // 
+            // cityBox
+            // 
+            this.cityBox.Location = new System.Drawing.Point(78, 29);
+            this.cityBox.Name = "cityBox";
+            this.cityBox.Size = new System.Drawing.Size(128, 20);
+            this.cityBox.TabIndex = 1;
+            this.cityBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // zipCodeBox
+            // 
+            this.zipCodeBox.Location = new System.Drawing.Point(78, 104);
+            this.zipCodeBox.Name = "zipCodeBox";
+            this.zipCodeBox.Size = new System.Drawing.Size(128, 20);
+            this.zipCodeBox.TabIndex = 5;
+            // 
+            // cityLabel
+            // 
+            this.cityLabel.AutoSize = true;
+            this.cityLabel.Location = new System.Drawing.Point(11, 32);
+            this.cityLabel.Name = "cityLabel";
+            this.cityLabel.Size = new System.Drawing.Size(24, 13);
+            this.cityLabel.TabIndex = 2;
+            this.cityLabel.Text = "City";
+            this.cityLabel.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // streetLabel
+            // 
+            this.streetLabel.AutoSize = true;
+            this.streetLabel.Location = new System.Drawing.Point(11, 69);
+            this.streetLabel.Name = "streetLabel";
+            this.streetLabel.Size = new System.Drawing.Size(35, 13);
+            this.streetLabel.TabIndex = 4;
+            this.streetLabel.Text = "Street";
+            this.streetLabel.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // searchButton
+            // 
+            this.searchButton.Location = new System.Drawing.Point(12, 276);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(233, 38);
+            this.searchButton.TabIndex = 0;
+            this.searchButton.Text = "Search";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1094, 657);
+            this.ClientSize = new System.Drawing.Size(1119, 684);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "SFM - Street Food Map";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.optionsGroup.ResumeLayout(false);
+            this.optionsGroup.PerformLayout();
+            this.addressGroup.ResumeLayout(false);
+            this.addressGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Label cityLabel;
+        private System.Windows.Forms.TextBox cityBox;
+        private System.Windows.Forms.Label streetLabel;
+        private System.Windows.Forms.TextBox streetBox;
+        private System.Windows.Forms.Label zipCodeLabel;
+        private System.Windows.Forms.TextBox zipCodeBox;
+        private System.Windows.Forms.GroupBox addressGroup;
+        private System.Windows.Forms.GroupBox optionsGroup;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
