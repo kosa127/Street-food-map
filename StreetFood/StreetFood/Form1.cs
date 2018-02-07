@@ -9,30 +9,59 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CefSharp;
-using CefSharp.WinForms;
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using GMap.NET.WindowsForms.ToolTips;
 
 namespace StreetFood
 {
     public partial class Form1 : Form
     {
 
-        public ChromiumWebBrowser chromeBrowser;
-
         public Form1()
         {
             InitializeComponent();
-            this.initializeChromeBrowser();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             //getting values from inputs
-            String city = cityBox.Text;
-            String street = streetBox.Text;
-            String zip = zipCodeBox.Text;
+            string city = cityBox.Text;
+            string street = streetBox.Text;
+            string zip = zipCodeBox.Text;
+
+            //api
+            WebRequest request = WebRequest.Create("http://data.streetfoodapp.com/1.1/schedule/" + city);
+            
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string data = reader.ReadToEnd();
+
+            Console.WriteLine(data);
+            
+            reader.Close();
+            dataStream.Close();
+            response.Close();
         }
-        private void Form1_Load(object sender, EventArgs e) {}
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.initMap();
+        }
+
+        private void initMap()
+        {
+            gMap.DragButton = MouseButtons.Left;
+            gMap.CanDragMap = true;
+            gMap.MapProvider = GMapProviders.GoogleMap;
+            gMap.Position = new PointLatLng(42.75, -97.75);
+            gMap.MinZoom = 0;
+            gMap.MaxZoom = 24;
+            gMap.Zoom = 9;
+            gMap.AutoScroll = true;
+        }
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) {}
         private void label1_Click(object sender, EventArgs e) {}
         private void textBox1_TextChanged(object sender, EventArgs e) {}
@@ -41,27 +70,5 @@ namespace StreetFood
         private void groupBox1_Enter(object sender, EventArgs e) {}
         private void groupBox1_Enter_1(object sender, EventArgs e) {}
 
-        private void initializeChromeBrowser()
-        {
-            //setting up path to HTML file with map
-            String mapLocalPath = String.Format("file:///{0}/map.html", Directory.GetCurrentDirectory());
-
-            //setting up browser settings
-            CefSettings browserSettings = new CefSettings();
-            browserSettings.RemoteDebuggingPort = 8088;
-            Cef.Initialize(browserSettings);
-
-            //initializing browser compontent
-            chromeBrowser = new ChromiumWebBrowser(mapLocalPath);
-            chromeBrowser.Dock = DockStyle.Fill;
-
-            //add ready browser to component
-            splitContainer1.Panel2.Controls.Add(chromeBrowser);
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Cef.Shutdown();
-        }
     }
 }
