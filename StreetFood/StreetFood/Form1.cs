@@ -8,12 +8,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using GMap.NET.WindowsForms.ToolTips;
+using Newtonsoft.Json;
 
 namespace StreetFood
 {
@@ -24,6 +26,14 @@ namespace StreetFood
         {
             InitializeComponent();
         }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) { }
+        private void label1_Click(object sender, EventArgs e) { }
+        private void textBox1_TextChanged(object sender, EventArgs e) { }
+        private void label2_Click(object sender, EventArgs e) { }
+        private void textBox2_TextChanged(object sender, EventArgs e) { }
+        private void groupBox1_Enter(object sender, EventArgs e) { }
+        private void groupBox1_Enter_1(object sender, EventArgs e) { }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -40,8 +50,8 @@ namespace StreetFood
             StreamReader reader = new StreamReader(dataStream);
             string data = reader.ReadToEnd();
 
-            Console.WriteLine(data);
-            
+            this.getVendorsFromApi(data);
+
             reader.Close();
             dataStream.Close();
             response.Close();
@@ -62,13 +72,58 @@ namespace StreetFood
             gMap.Zoom = 9;
             gMap.AutoScroll = true;
         }
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) {}
-        private void label1_Click(object sender, EventArgs e) {}
-        private void textBox1_TextChanged(object sender, EventArgs e) {}
-        private void label2_Click(object sender, EventArgs e) {}
-        private void textBox2_TextChanged(object sender, EventArgs e) {}
-        private void groupBox1_Enter(object sender, EventArgs e) {}
-        private void groupBox1_Enter_1(object sender, EventArgs e) {}
+     
+        private void getVendorsFromApi(string data)
+        {
+            List<Vendor> vendors = new List<Vendor>();
+            dynamic vendorsData = JsonConvert.DeserializeObject(data);
+          
+            foreach(var vendor in vendorsData["vendors"])
+            {
+                foreach (var vendorParams in vendor)
+                {
+                    List<Open> opens = new List<Open>();
+                    List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
 
+                    if(vendorParams["payment_methods"] != null)
+                    {
+                        foreach (var method in vendorParams["payment_methods"])
+                        {
+                            paymentMethods.Add(new PaymentMethod() { name = method });
+                        }
+                    }
+                    
+                    foreach (var open in vendorParams["open"])
+                    {
+                        opens.Add(new Open() {
+                           start = (int)open["start"],
+                           end = (int)open["end"],
+                           display = open["display"],
+                           latitude = (float)open["latitude"],
+                           longitude = (float)open["longitude"]
+                        });
+                    }
+
+                    vendors.Add(new Vendor() {
+                        descriptionShort = vendorParams["description_short"],
+                        identifier = vendorParams["identifier"],
+                        name = vendorParams["name"],
+                        region = vendorParams["region"],
+                        url = vendorParams["url"],
+                        phone = vendorParams["phone"],
+                        email = vendorParams["email"],
+                        twitter = vendorParams["twitter"],
+                        facebook = vendorParams["facebook"],
+                        instagram = vendorParams["instagram"],
+                        description = vendorParams["description"],
+                        rating = (int)vendorParams["rating"],
+                        paymentMethods = paymentMethods,
+                        opens = opens
+                    });
+                }
+            }
+
+            Console.WriteLine(vendors[0].facebook);
+        }
     }
 }
