@@ -21,7 +21,6 @@ namespace StreetFood
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
@@ -50,6 +49,9 @@ namespace StreetFood
             StreamReader reader = new StreamReader(dataStream);
             string data = reader.ReadToEnd();
 
+            List<Vendor> vendors = this.getVendorsFromApi(data);
+            List<Vendor> todayVendors = this.getTodayVendors(vendors);
+
             reader.Close();
             dataStream.Close();
             response.Close();
@@ -58,6 +60,28 @@ namespace StreetFood
             List<Vendor> vendors = this.getVendorsFromApi(data);
             this.makeMarkers(vendors);
         }
+
+        private List<Vendor> getTodayVendors(List<Vendor> vendors)
+        {
+            List<Vendor> todayVendors = new List<Vendor>();
+
+            foreach (Vendor vendor in vendors)
+            {
+                if (vendor.opens.Any())
+                {
+                    foreach (Open open in vendor.opens)
+                    {
+                        if (open.isOpennedToday())
+                        {
+                            todayVendors.Add(vendor);
+                        }
+                    }
+                }
+            }
+
+            return todayVendors;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             this.initMap();
