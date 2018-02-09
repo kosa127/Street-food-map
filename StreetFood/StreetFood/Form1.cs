@@ -21,7 +21,6 @@ namespace StreetFood
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
@@ -52,8 +51,6 @@ namespace StreetFood
 
             List<Vendor> vendors = this.getVendorsFromApi(data);
             List<Vendor> todayVendors = this.getTodayVendors(vendors);
-
-            Console.WriteLine(todayVendors.Count);
 
             reader.Close();
             dataStream.Close();

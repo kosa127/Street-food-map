@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace StreetFood
 {
@@ -16,22 +17,15 @@ namespace StreetFood
 
         public bool isOpennedToday()
         {
-            if (this.start <= this.getTodaysTimestamp())
+            if (this.start <= Utilities.Utilities.getTodaysTimestamp())
             {
-                if (this.end >= this.getTodaysTimestamp())
+                if (this.end >= Utilities.Utilities.getTodaysTimestamp())
                 {
                     return true;
                 }
             }
 
             return false;
-            //return ((this.start <= this.getTodaysTimestamp()) && (this.end >= this.getTodaysTimestamp()));
-        }
-
-        private int getTodaysTimestamp()
-        {
-            return (int)new DateTimeOffset(new DateTime(2018, 2, 9, 0, 0, 0, 0, DateTimeKind.Utc))
-                .ToUnixTimeSeconds();
         }
     }
 }
