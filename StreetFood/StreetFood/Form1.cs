@@ -16,6 +16,7 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using GMap.NET.WindowsForms.ToolTips;
 using Newtonsoft.Json;
+using StreetFood.models;
 
 namespace StreetFood
 {
@@ -36,29 +37,15 @@ namespace StreetFood
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //getting values from inputs
             string city = "vancouver"; //cityBox.Text;
-            string street = streetBox.Text;
-            string zip = zipCodeBox.Text;
-
-            //api
-            WebRequest request = WebRequest.Create("http://data.streetfoodapp.com/1.1/schedule/" + city);
-            
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream dataStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(dataStream);
-            string data = reader.ReadToEnd();
+            string data = this.getDataFromApi(city);
 
             List<Vendor> vendors = this.getVendorsFromApi(data);
             List<Vendor> todayVendors = this.getTodayVendors(vendors);
 
-            reader.Close();
-            dataStream.Close();
-            response.Close();
-
-            gMap.SetPositionByKeywords(city); //Position = this.getPointByCityName(city);
-            List<Vendor> vendors = this.getVendorsFromApi(data);
-            this.makeMarkers(vendors);
+            gMap.SetPositionByKeywords(city);
+            this.makeMarkers(todayVendors);
+            gMap.ZoomAndCenterMarkers("vendorMarkers");
         }
 
         private List<Vendor> getTodayVendors(List<Vendor> vendors)
@@ -92,12 +79,14 @@ namespace StreetFood
             gMap.DragButton = MouseButtons.Left;
             gMap.CanDragMap = true;
             gMap.MapProvider = GMapProviders.GoogleMap;
+            //gMap.NegativeMode = true; //NightMode switch
             gMap.SetPositionByKeywords("new york");
             gMap.MinZoom = 4;
             gMap.MaxZoom = 24;
             gMap.Zoom = 11;
             gMap.AutoScroll = true;
             gMap.MarkersEnabled = true;
+            gMap.ShowCenter = false;
         }
      
         private List<Vendor> getVendorsFromApi(string data)
@@ -153,29 +142,52 @@ namespace StreetFood
             return vendors;
         }
 
-        private PointLatLng getPointByCityName(string city) //TODO: should be removed
-        {
-            List<PointLatLng> points;
-            GMapProviders.GoogleMap.GetPoints(city, out points);
-
-            return points[0];
-        }
-
         private void makeMarkers(List<Vendor> vendors)
         {
             Bitmap markerIcon = new Bitmap(Properties.Resources.foodtruck_icon);
             GMapOverlay markersOverlay = new GMapOverlay("vendorMarkers");
 
-            GMarkerGoogle marker = new GMarkerGoogle(this.getPointByCityName("vancouver"), markerIcon);
-            marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
-            marker.ToolTipText = vendors[0].description;
-            marker.ToolTip = new GMapBaloonToolTip(marker);
-            marker.ToolTip.Fill = new SolidBrush(Color.GhostWhite);
-            marker.ToolTip.Stroke = new Pen(Color.Gold);
-
-            markersOverlay.Markers.Add(marker);
+            foreach(Vendor vendor in vendors)
+            {
+                this.setMarkerIfOpened(vendor, markerIcon, markersOverlay);
+            }
+            
             gMap.Overlays.Add(markersOverlay);
-          
+        }
+
+        private void setMarkerIfOpened(Vendor vendor, Bitmap icon, GMapOverlay overlay)
+        {
+            foreach (Open open in vendor.opens)
+            {
+                if (open.isOpennedToday())
+                {
+                    GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(open.latitude, open.longitude), icon);
+                    SolidBrush fillColor = new SolidBrush(Color.GhostWhite);
+                    Pen borderColor = new Pen(Color.Gold);
+                    overlay.Markers.Add(marker);
+
+                    marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                    marker.ToolTipText = vendor.description;
+                    marker.ToolTip = new VendorTooltip(marker);
+                    marker.ToolTip.Fill = fillColor;
+                    marker.ToolTip.Stroke = borderColor;
+                }
+            }
+        }
+
+        private string getDataFromApi(string city)
+        {
+            WebRequest request = WebRequest.Create("http://data.streetfoodapp.com/1.1/schedule/" + city);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string data = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+
+            return data;
         }
     }
 }

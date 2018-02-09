@@ -105,10 +105,11 @@
     </Compile>
     <Compile Include="models\Open.cs" />
     <Compile Include="models\PaymentMethod.cs" />
+    <Compile Include="models\VendorTooltip.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities.cs" />
-    <Compile Include="Vendor.cs" />
+    <Compile Include="models\Utilities.cs" />
+    <Compile Include="models\Vendor.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
