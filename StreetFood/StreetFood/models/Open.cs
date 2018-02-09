@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Utilities;
 
 namespace StreetFood
 {
@@ -17,9 +16,9 @@ namespace StreetFood
 
         public bool isOpennedToday()
         {
-            if (this.start <= Utilities.Utilities.getTodaysTimestamp())
+            if (this.start <= Utilities.getTodaysTimestamp())
             {
-                if (this.end >= Utilities.Utilities.getTodaysTimestamp())
+                if (this.end >= Utilities.getTodaysTimestamp())
                 {
                     return true;
                 }

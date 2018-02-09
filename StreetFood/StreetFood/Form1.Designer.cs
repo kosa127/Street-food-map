@@ -67,7 +67,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.gMap);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(1475, 842);
-            this.splitContainer1.SplitterDistance = 334;
+            this.splitContainer1.SplitterDistance = 333;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -196,6 +196,7 @@
             // 
             this.gMap.Bearing = 0F;
             this.gMap.CanDragMap = true;
+            this.gMap.Cursor = System.Windows.Forms.Cursors.Hand;
             this.gMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gMap.EmptyTileColor = System.Drawing.Color.Navy;
             this.gMap.GrayScaleMode = false;
@@ -216,7 +217,7 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(1136, 842);
+            this.gMap.Size = new System.Drawing.Size(1137, 842);
             this.gMap.TabIndex = 0;
             this.gMap.Zoom = 0D;
             // 
