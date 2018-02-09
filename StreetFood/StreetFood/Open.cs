@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace StreetFood
 {
@@ -13,5 +14,18 @@ namespace StreetFood
         public string display { get; set; }
         public float latitude { get; set; }
         public float longitude { get; set; }
+
+        public bool isOpennedToday()
+        {
+            if (this.start <= Utilities.Utilities.getTodaysTimestamp())
+            {
+                if (this.end >= Utilities.Utilities.getTodaysTimestamp())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

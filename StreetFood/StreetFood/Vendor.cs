@@ -22,5 +22,18 @@ namespace StreetFood
         public int rating { get; set; }
         public List<PaymentMethod> paymentMethods { get; set; }
         public List<Open> opens { get; set; }
+
+        public Open openToday()
+        {
+            foreach (Open open in this.opens)
+            {
+                if (open.isOpennedToday())
+                {
+                    return open;
+                }
+            }
+
+            return null;
+        }
     }
 }

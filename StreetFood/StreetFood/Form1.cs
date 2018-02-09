@@ -21,7 +21,6 @@ namespace StreetFood
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
@@ -43,19 +42,42 @@ namespace StreetFood
             string zip = zipCodeBox.Text;
 
             //api
-            WebRequest request = WebRequest.Create("http://data.streetfoodapp.com/1.1/schedule/" + city);
+            WebRequest request = WebRequest.Create("http://data.streetfoodapp.com/1.1/schedule/" + "vancouver");
             
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream dataStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string data = reader.ReadToEnd();
 
-            this.getVendorsFromApi(data);
+            List<Vendor> vendors = this.getVendorsFromApi(data);
+            List<Vendor> todayVendors = this.getTodayVendors(vendors);
 
             reader.Close();
             dataStream.Close();
             response.Close();
         }
+
+        private List<Vendor> getTodayVendors(List<Vendor> vendors)
+        {
+            List<Vendor> todayVendors = new List<Vendor>();
+
+            foreach (Vendor vendor in vendors)
+            {
+                if (vendor.opens.Any())
+                {
+                    foreach (Open open in vendor.opens)
+                    {
+                        if (open.isOpennedToday())
+                        {
+                            todayVendors.Add(vendor);
+                        }
+                    }
+                }
+            }
+
+            return todayVendors;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             this.initMap();
@@ -73,7 +95,7 @@ namespace StreetFood
             gMap.AutoScroll = true;
         }
      
-        private void getVendorsFromApi(string data)
+        private List<Vendor> getVendorsFromApi(string data)
         {
             List<Vendor> vendors = new List<Vendor>();
             dynamic vendorsData = JsonConvert.DeserializeObject(data);
@@ -123,7 +145,7 @@ namespace StreetFood
                 }
             }
 
-            Console.WriteLine(vendors[0].facebook);
+            return vendors;
         }
     }
 }
