@@ -1,6 +1,6 @@
 ﻿namespace StreetFood
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Wymagana zmienna projektanta.
@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.optionsGroup = new System.Windows.Forms.GroupBox();
+            this.nightModeLabel = new System.Windows.Forms.Label();
+            this.nightModeBar = new System.Windows.Forms.ProgressBar();
             this.addressGroup = new System.Windows.Forms.GroupBox();
             this.cityBox = new System.Windows.Forms.TextBox();
             this.cityLabel = new System.Windows.Forms.Label();
@@ -45,7 +48,6 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -57,21 +59,49 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.gMap);
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1475, 842);
-            this.splitContainer1.SplitterDistance = 333;
-            this.splitContainer1.SplitterWidth = 5;
+            this.splitContainer1.Size = new System.Drawing.Size(1106, 684);
+            this.splitContainer1.SplitterDistance = 249;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // optionsGroup
+            // 
+            this.optionsGroup.Controls.Add(this.nightModeLabel);
+            this.optionsGroup.Controls.Add(this.nightModeBar);
+            this.optionsGroup.Location = new System.Drawing.Point(14, 89);
+            this.optionsGroup.Name = "optionsGroup";
+            this.optionsGroup.Size = new System.Drawing.Size(221, 77);
+            this.optionsGroup.TabIndex = 8;
+            this.optionsGroup.TabStop = false;
+            this.optionsGroup.Text = "Options";
+            // 
+            // nightModeLabel
+            // 
+            this.nightModeLabel.AutoSize = true;
+            this.nightModeLabel.Location = new System.Drawing.Point(11, 29);
+            this.nightModeLabel.Name = "nightModeLabel";
+            this.nightModeLabel.Size = new System.Drawing.Size(61, 13);
+            this.nightModeLabel.TabIndex = 1;
+            this.nightModeLabel.Text = "Night mode";
+            // 
+            // nightModeBar
+            // 
+            this.nightModeBar.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nightModeBar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.nightModeBar.Location = new System.Drawing.Point(78, 24);
+            this.nightModeBar.Maximum = 1;
+            this.nightModeBar.Name = "nightModeBar";
+            this.nightModeBar.Size = new System.Drawing.Size(38, 23);
+            this.nightModeBar.Step = 1;
+            this.nightModeBar.TabIndex = 0;
+            this.nightModeBar.Click += new System.EventHandler(this.nightModeBar_Click);
             // 
             // addressGroup
             // 
             this.addressGroup.Controls.Add(this.cityBox);
             this.addressGroup.Controls.Add(this.cityLabel);
-            this.addressGroup.Location = new System.Drawing.Point(16, 15);
-            this.addressGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.addressGroup.Location = new System.Drawing.Point(12, 12);
             this.addressGroup.Name = "addressGroup";
-            this.addressGroup.Padding = new System.Windows.Forms.Padding(4);
-            this.addressGroup.Size = new System.Drawing.Size(308, 86);
+            this.addressGroup.Size = new System.Drawing.Size(223, 71);
             this.addressGroup.TabIndex = 7;
             this.addressGroup.TabStop = false;
             this.addressGroup.Text = "Type desired cityname";
@@ -79,37 +109,33 @@
             // 
             // cityBox
             // 
-            this.cityBox.Location = new System.Drawing.Point(107, 39);
-            this.cityBox.Margin = new System.Windows.Forms.Padding(4);
+            this.cityBox.Location = new System.Drawing.Point(78, 29);
             this.cityBox.Name = "cityBox";
-            this.cityBox.Size = new System.Drawing.Size(169, 22);
+            this.cityBox.Size = new System.Drawing.Size(128, 20);
             this.cityBox.TabIndex = 1;
-            this.cityBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // cityLabel
             // 
             this.cityLabel.AutoSize = true;
-            this.cityLabel.Location = new System.Drawing.Point(15, 39);
-            this.cityLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.cityLabel.Location = new System.Drawing.Point(11, 32);
             this.cityLabel.Name = "cityLabel";
-            this.cityLabel.Size = new System.Drawing.Size(31, 17);
+            this.cityLabel.Size = new System.Drawing.Size(24, 13);
             this.cityLabel.TabIndex = 2;
             this.cityLabel.Text = "City";
-            this.cityLabel.Click += new System.EventHandler(this.label1_Click);
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(13, 109);
-            this.searchButton.Margin = new System.Windows.Forms.Padding(4);
+            this.searchButton.Location = new System.Drawing.Point(12, 184);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(311, 53);
+            this.searchButton.Size = new System.Drawing.Size(223, 38);
             this.searchButton.TabIndex = 0;
             this.searchButton.Text = "Search !";
             this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Click += new System.EventHandler(this.button1_Click);
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // gMap
             // 
+            this.gMap.AutoScroll = true;
             this.gMap.Bearing = 0F;
             this.gMap.CanDragMap = true;
             this.gMap.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -119,10 +145,9 @@
             this.gMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMap.LevelsKeepInMemmory = 5;
             this.gMap.Location = new System.Drawing.Point(0, 0);
-            this.gMap.Margin = new System.Windows.Forms.Padding(4);
             this.gMap.MarkersEnabled = true;
-            this.gMap.MaxZoom = 2;
-            this.gMap.MinZoom = 2;
+            this.gMap.MaxZoom = 24;
+            this.gMap.MinZoom = 4;
             this.gMap.MouseWheelZoomEnabled = true;
             this.gMap.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
             this.gMap.Name = "gMap";
@@ -133,19 +158,19 @@
             this.gMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMap.ShowTileGridLines = false;
-            this.gMap.Size = new System.Drawing.Size(1137, 842);
+            this.gMap.Size = new System.Drawing.Size(853, 684);
             this.gMap.TabIndex = 0;
-            this.gMap.Zoom = 0D;
+            this.gMap.Zoom = 11D;
+            this.gMap.OnMarkerClick += new GMap.NET.WindowsForms.MarkerClick(this.gMap_OnMarkerClick);
             // 
-            // Form1
+            // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1475, 842);
+            this.ClientSize = new System.Drawing.Size(1106, 684);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SFM - Street Food Map";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -166,6 +191,9 @@
         private System.Windows.Forms.Label cityLabel;
         private System.Windows.Forms.TextBox cityBox;
         private System.Windows.Forms.GroupBox addressGroup;
+        private System.Windows.Forms.GroupBox optionsGroup;
+        private System.Windows.Forms.Label nightModeLabel;
+        private System.Windows.Forms.ProgressBar nightModeBar;
         private GMap.NET.WindowsForms.GMapControl gMap;
     }
 }

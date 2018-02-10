@@ -1,41 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using GMap.NET.WindowsForms.ToolTips;
 using Newtonsoft.Json;
 using StreetFood.models;
 
 namespace StreetFood
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public GMapMarker currentlySelectedMarker;
+
+        public MainForm()
         {
             InitializeComponent();
         }
 
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) { }
-        private void label1_Click(object sender, EventArgs e) { }
-        private void textBox1_TextChanged(object sender, EventArgs e) { }
-        private void label2_Click(object sender, EventArgs e) { }
-        private void textBox2_TextChanged(object sender, EventArgs e) { }
-        private void groupBox1_Enter(object sender, EventArgs e) { }
-        private void groupBox1_Enter_1(object sender, EventArgs e) { }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void searchButton_Click(object sender, EventArgs e)
         {
             string city = "vancouver"; //cityBox.Text;
             string data = this.getDataFromApi(city);
@@ -77,50 +65,45 @@ namespace StreetFood
         private void initMap()
         {
             gMap.DragButton = MouseButtons.Left;
-            gMap.CanDragMap = true;
             gMap.MapProvider = GMapProviders.GoogleMap;
-            //gMap.NegativeMode = true; //NightMode switch
             gMap.SetPositionByKeywords("new york");
-            gMap.MinZoom = 4;
-            gMap.MaxZoom = 24;
-            gMap.Zoom = 11;
-            gMap.AutoScroll = true;
-            gMap.MarkersEnabled = true;
             gMap.ShowCenter = false;
         }
-     
+
         private List<Vendor> getVendorsFromApi(string data)
         {
             List<Vendor> vendors = new List<Vendor>();
             dynamic vendorsData = JsonConvert.DeserializeObject(data);
-          
-            foreach(var vendor in vendorsData["vendors"])
+
+            foreach (var vendor in vendorsData["vendors"])
             {
                 foreach (var vendorParams in vendor)
                 {
                     List<Open> opens = new List<Open>();
                     List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
 
-                    if(vendorParams["payment_methods"] != null)
+                    if (vendorParams["payment_methods"] != null)
                     {
                         foreach (var method in vendorParams["payment_methods"])
                         {
                             paymentMethods.Add(new PaymentMethod() { name = method });
                         }
                     }
-                    
+
                     foreach (var open in vendorParams["open"])
                     {
-                        opens.Add(new Open() {
-                           start = (int)open["start"],
-                           end = (int)open["end"],
-                           display = open["display"],
-                           latitude = (float)open["latitude"],
-                           longitude = (float)open["longitude"]
+                        opens.Add(new Open()
+                        {
+                            start = (int)open["start"],
+                            end = (int)open["end"],
+                            display = open["display"],
+                            latitude = (float)open["latitude"],
+                            longitude = (float)open["longitude"]
                         });
                     }
 
-                    vendors.Add(new Vendor() {
+                    vendors.Add(new Vendor()
+                    {
                         descriptionShort = vendorParams["description_short"],
                         identifier = vendorParams["identifier"],
                         name = vendorParams["name"],
@@ -147,11 +130,11 @@ namespace StreetFood
             Bitmap markerIcon = new Bitmap(Properties.Resources.foodtruck_icon);
             GMapOverlay markersOverlay = new GMapOverlay("vendorMarkers");
 
-            foreach(Vendor vendor in vendors)
+            foreach (Vendor vendor in vendors)
             {
                 this.setMarkerIfOpened(vendor, markerIcon, markersOverlay);
             }
-            
+
             gMap.Overlays.Add(markersOverlay);
         }
 
@@ -169,6 +152,7 @@ namespace StreetFood
                     marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                     marker.ToolTipText = "text";
                     marker.ToolTip = new VendorTooltip(marker, vendor);
+                    marker.ToolTip.Foreground = new SolidBrush(System.Drawing.ColorTranslator.FromHtml("#16EFC0"));
                     marker.ToolTip.Foreground = new SolidBrush(System.Drawing.ColorTranslator.FromHtml("#16EFC0"));
                     marker.ToolTip.Fill = fillColor;
                     marker.ToolTip.Stroke = borderColor;
@@ -189,6 +173,23 @@ namespace StreetFood
             response.Close();
 
             return data;
+        }
+
+        private void gMap_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            if(currentlySelectedMarker != null)
+            {
+                currentlySelectedMarker.ToolTipMode = MarkerTooltipMode.Never;
+            }
+            currentlySelectedMarker = item;
+            item.ToolTipMode = MarkerTooltipMode.Always;
+        }
+
+        private void nightModeBar_Click(object sender, EventArgs e)
+        {
+            nightModeBar.Step = nightModeBar.Value == 0 ? 1 : -1;
+            nightModeBar.PerformStep();
+            gMap.NegativeMode = !gMap.NegativeMode;
         }
     }
 }
