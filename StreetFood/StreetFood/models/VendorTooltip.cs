@@ -14,19 +14,25 @@ namespace StreetFood.models
 {
     class VendorTooltip : GMapBaloonToolTip
     {
-        public VendorTooltip(GMapMarker marker)
-         : base(marker)
+        private Vendor vendor;
+        public VendorTooltip(GMapMarker marker, Vendor vendor) : base(marker)
         {
-            Stroke = DefaultStroke;
+            //Stroke = DefaultStroke;
             Fill = Brushes.Yellow;
-    }
+            this.vendor = vendor;
+        }
 
         public override void OnRender(Graphics g)
         {
-            Size st = g.MeasureString(Marker.ToolTipText, Font).ToSize();
-            Rectangle rect = new Rectangle(Marker.ToolTipPosition.X, Marker.ToolTipPosition.Y - st.Height, 250, 200);
+            Rectangle rect = new Rectangle(Marker.ToolTipPosition.X, Marker.ToolTipPosition.Y - 100, 250, 100);
+            Rectangle rectInside = new Rectangle(Marker.ToolTipPosition.X+25, Marker.ToolTipPosition.Y - 130, 250, 100);
+            Rectangle rating = new Rectangle(Marker.ToolTipPosition.X + 25, Marker.ToolTipPosition.Y - 100, 240, 20);
+            Rectangle open = new Rectangle(Marker.ToolTipPosition.X + 25, Marker.ToolTipPosition.Y - 70, 240, 20);
+
             rect.Offset(Offset.X, Offset.Y);
 
+            Open openVendor = this.vendor.openToday();
+            
             using (GraphicsPath objGP = new GraphicsPath())
             {
                 objGP.AddLine(rect.X + 2 * Radius, rect.Y + rect.Height, rect.X + Radius, rect.Y + rect.Height + Radius);
@@ -43,16 +49,21 @@ namespace StreetFood.models
                 objGP.CloseFigure();
 
                 g.FillPath(Fill, objGP);
-                g.DrawPath(Stroke, objGP);
-                
+                //g.DrawPath(Stroke, objGP);
             }
 
 #if !PocketPC
-            g.DrawString(Marker.ToolTipText, Font, Foreground, rect);
+
+            Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular);
+
+            g.DrawString(this.vendor.name, Font, Foreground, rectInside);
+            g.DrawString("Rating: "+this.vendor.rating.ToString()+" points", Font, Foreground, rating);
+            g.DrawString("Today opened: " + Utilities.getTime(openVendor.start) + " - "+ Utilities.getTime(openVendor.end), Font, Foreground, open);
+
 #else
             g.DrawString(ToolTipText, ToolTipFont, TooltipForeground, rect, ToolTipFormat);
 #endif
         }
-    
+
     }
 }

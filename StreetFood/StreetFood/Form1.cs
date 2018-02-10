@@ -162,13 +162,14 @@ namespace StreetFood
                 if (open.isOpennedToday())
                 {
                     GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(open.latitude, open.longitude), icon);
-                    SolidBrush fillColor = new SolidBrush(Color.GhostWhite);
+                    SolidBrush fillColor = new SolidBrush(System.Drawing.ColorTranslator.FromHtml("#00110D"));
                     Pen borderColor = new Pen(Color.Gold);
                     overlay.Markers.Add(marker);
 
                     marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
-                    marker.ToolTipText = vendor.description;
-                    marker.ToolTip = new VendorTooltip(marker);
+                    marker.ToolTipText = "text";
+                    marker.ToolTip = new VendorTooltip(marker, vendor);
+                    marker.ToolTip.Foreground = new SolidBrush(System.Drawing.ColorTranslator.FromHtml("#16EFC0"));
                     marker.ToolTip.Fill = fillColor;
                     marker.ToolTip.Stroke = borderColor;
                 }
