@@ -41,7 +41,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.optionsGroup.SuspendLayout();
             this.addressGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,9 +52,9 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.optionsGroup);
             this.splitContainer1.Panel1.Controls.Add(this.addressGroup);
             this.splitContainer1.Panel1.Controls.Add(this.searchButton);
+            this.splitContainer1.Panel1.Cursor = System.Windows.Forms.Cursors.IBeam;
             // 
             // splitContainer1.Panel2
             // 
@@ -105,7 +104,8 @@
             this.addressGroup.Size = new System.Drawing.Size(223, 71);
             this.addressGroup.TabIndex = 7;
             this.addressGroup.TabStop = false;
-            this.addressGroup.Text = "Address";
+            this.addressGroup.Text = "Type desired cityname";
+            this.addressGroup.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // cityBox
             // 
@@ -129,7 +129,7 @@
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(223, 38);
             this.searchButton.TabIndex = 0;
-            this.searchButton.Text = "Search";
+            this.searchButton.Text = "Search !";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
@@ -178,8 +178,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.optionsGroup.ResumeLayout(false);
-            this.optionsGroup.PerformLayout();
             this.addressGroup.ResumeLayout(false);
             this.addressGroup.PerformLayout();
             this.ResumeLayout(false);
