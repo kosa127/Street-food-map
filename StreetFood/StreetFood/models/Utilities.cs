@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace StreetFood
+namespace StreetFood.models
 {
     class Utilities
     {
         public static int getTodaysTimestamp()
         {
-            return (int)new DateTimeOffset(new DateTime(2018, 2, 10, 20, 0, 0, 0, DateTimeKind.Utc))
+            return (int)new DateTimeOffset(new DateTime(2018, 2, 12, 20, 0, 0, 0, DateTimeKind.Utc))
                 .ToUnixTimeSeconds();
         }
 
