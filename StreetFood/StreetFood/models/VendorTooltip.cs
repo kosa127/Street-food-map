@@ -49,7 +49,7 @@ namespace StreetFood.models
 
             Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular);
 
-            g.DrawString(this.vendor.name, Font, Foreground, rectInside);
+            g.DrawString("Name: "+this.vendor.name, Font, Foreground, rectInside);
             g.DrawString("Rating: "+this.vendor.rating.ToString()+" points", Font, Foreground, rating);
             g.DrawString("Today opened: " + Utilities.getTime(openVendor.start) + " - "+ Utilities.getTime(openVendor.end), Font, Foreground, open);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GMap.NET.WindowsForms;
+using System.Collections.Generic;
 
 namespace StreetFood.models
 {
@@ -15,9 +16,11 @@ namespace StreetFood.models
         public string facebook { get; set; }
         public string instagram { get; set; }
         public string description { get; set; }
+        public string imageUrl { get; set; }
         public int rating { get; set; }
         public List<PaymentMethod> paymentMethods { get; set; }
         public List<Open> opens { get; set; }
+        public GMapMarker marker { get; set; }
 
         public Open openToday()
         {
