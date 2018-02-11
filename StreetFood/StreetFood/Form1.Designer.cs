@@ -41,6 +41,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.optionsGroup.SuspendLayout();
             this.addressGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +54,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.addressGroup);
+            this.splitContainer1.Panel1.Controls.Add(this.optionsGroup);
             this.splitContainer1.Panel1.Controls.Add(this.searchButton);
             this.splitContainer1.Panel1.Cursor = System.Windows.Forms.Cursors.IBeam;
             // 
@@ -105,7 +107,6 @@
             this.addressGroup.TabIndex = 7;
             this.addressGroup.TabStop = false;
             this.addressGroup.Text = "Type desired cityname";
-            this.addressGroup.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // cityBox
             // 
