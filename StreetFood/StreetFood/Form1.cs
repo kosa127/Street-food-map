@@ -177,12 +177,21 @@ namespace StreetFood
 
         private void gMap_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            if(currentlySelectedMarker != null)
+            if (currentlySelectedMarker != null)
             {
                 currentlySelectedMarker.ToolTipMode = MarkerTooltipMode.Never;
             }
-            currentlySelectedMarker = item;
-            item.ToolTipMode = MarkerTooltipMode.Always;
+
+            if (currentlySelectedMarker == item)
+            {
+                currentlySelectedMarker.ToolTipMode = MarkerTooltipMode.Never;
+                currentlySelectedMarker = null;
+            }
+            else
+            {
+                currentlySelectedMarker = item;
+                currentlySelectedMarker.ToolTipMode = MarkerTooltipMode.Always;
+            }
         }
 
         private void nightModeBar_Click(object sender, EventArgs e)
