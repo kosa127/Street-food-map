@@ -34,5 +34,17 @@ namespace StreetFood.models
 
             return null;
         }
+
+        public string getReadablePaymentMethods()
+        {
+            string methods = "";
+
+            foreach (PaymentMethod paymentMethod in this.paymentMethods)
+            {
+                methods += paymentMethod.getName() + ", ";
+            }
+
+            return methods;
+        }
     }
 }

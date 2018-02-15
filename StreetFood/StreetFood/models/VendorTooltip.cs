@@ -10,7 +10,6 @@ namespace StreetFood.models
         private Vendor vendor;
         public VendorTooltip(GMapMarker marker, Vendor vendor) : base(marker)
         {
-            //Stroke = DefaultStroke;
             Fill = Brushes.Yellow;
             this.vendor = vendor;
         }
@@ -18,7 +17,7 @@ namespace StreetFood.models
         public override void OnRender(Graphics g)
         {
             Rectangle rect = new Rectangle(Marker.ToolTipPosition.X, Marker.ToolTipPosition.Y - 100, 250, 100);
-            Rectangle rectInside = new Rectangle(Marker.ToolTipPosition.X+25, Marker.ToolTipPosition.Y - 130, 250, 100);
+            Rectangle name = new Rectangle(Marker.ToolTipPosition.X + 25, Marker.ToolTipPosition.Y - 130, 250, 100);
             Rectangle rating = new Rectangle(Marker.ToolTipPosition.X + 25, Marker.ToolTipPosition.Y - 100, 240, 20);
             Rectangle open = new Rectangle(Marker.ToolTipPosition.X + 25, Marker.ToolTipPosition.Y - 70, 240, 20);
 
@@ -47,9 +46,9 @@ namespace StreetFood.models
 
 #if !PocketPC
 
-            Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular);
+            Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold);
 
-            g.DrawString("Name: "+this.vendor.name, Font, Foreground, rectInside);
+            g.DrawString("Name: " + this.vendor.name, Font, Foreground, name);
             g.DrawString("Rating: "+this.vendor.rating.ToString()+" points", Font, Foreground, rating);
             g.DrawString("Today opened: " + Utilities.getTime(openVendor.start) + " - "+ Utilities.getTime(openVendor.end), Font, Foreground, open);
 
