@@ -17,25 +17,26 @@ namespace StreetFood
     public partial class MainForm : Form
     {
         public GMapMarker currentlySelectedMarker;
-        private List<Vendor> cachedVendors;
+        private List<Vendor> todayVendors;
 
         public MainForm()
         {
             InitializeComponent();
+            this.initMap();
         }
 
         private void searchButton_Click(object sender, EventArgs e)
         {
             string city = cityBox.Text.ToLower();
-            //string city = "vancouver";
             string data = this.getDataFromApi(city);
 
             if (data != "error")
             {
                 List<Vendor> vendors = this.getVendorsFromApi(data);
-                List<Vendor> todayVendors = this.getTodayVendors(vendors);
+                this.todayVendors = this.getTodayVendors(vendors);
 
                 gMap.SetPositionByKeywords(city);
+                gMap.Overlays.Clear();
                 this.makeMarkers(todayVendors);
                 gMap.ZoomAndCenterMarkers("vendorMarkers");
             }
@@ -59,16 +60,9 @@ namespace StreetFood
                 }
             }
 
-            this.cachedVendors = todayVendors;
-
             return todayVendors;
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.initMap();
-        }
-
+        
         private void initMap()
         {
             gMap.DragButton = MouseButtons.Left;
@@ -88,6 +82,7 @@ namespace StreetFood
                 {
                     List<Open> opens = new List<Open>();
                     List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+                    string imageUrl = "http://bcmd.bt/wp-content/themes/BcmdTheme/images/no-image.png";
 
                     if (vendorParams["payment_methods"] != null)
                     {
@@ -108,8 +103,6 @@ namespace StreetFood
                             longitude = (float)open["longitude"]
                         });
                     }
-
-                    string imageUrl = "";
 
                     if (vendorParams["images"] != null)
                     {
@@ -197,6 +190,8 @@ namespace StreetFood
                 return data;
             } catch (Exception e)
             {
+                MessageBox.Show("Make sure that you did not made any typo.", "No food trucks found :(", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
                 return "error";
             }
             
@@ -204,20 +199,11 @@ namespace StreetFood
 
         private void gMap_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            Vendor clickedVendor = this.getVendorByMarker(this.cachedVendors, item);
+            Vendor clickedVendor = this.getVendorByMarker(this.todayVendors, item);
 
             if (clickedVendor != null)
             {
-                if (clickedVendor.imageUrl != null)
-                {
-                    pictureBox1.ImageLocation = clickedVendor.imageUrl;
-                    label1.Visible = true;
-                    label2.Visible = true;
-                    pictureBox1.Visible = true;
-                    label1.Text = "Name: " + clickedVendor.name;
-                    label2.Text = "Description: " + clickedVendor.description;
-                }
-                
+                this.setResultPanelContent(clickedVendor);
             }
             
             if (currentlySelectedMarker != null)
@@ -227,9 +213,8 @@ namespace StreetFood
 
             if (currentlySelectedMarker == item)
             {
-                label1.Visible = false;
-                label2.Visible = false;
-                pictureBox1.Visible = false;
+                resultGroupBox.Visible = false;
+                imageBox.Visible = false;
                 currentlySelectedMarker.ToolTipMode = MarkerTooltipMode.Never;
                 currentlySelectedMarker = null;
             }
@@ -260,58 +245,67 @@ namespace StreetFood
             gMap.NegativeMode = !gMap.NegativeMode;
         }
 
-        private void cityLabel_Click(object sender, EventArgs e)
+        private void facebookIcon_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://facebook.com/" + (string)facebookIcon.Tag);
         }
 
-        private void nightModeLabel_Click(object sender, EventArgs e)
+        private void instagramIcon_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://instagram.com/" + (string)instagramIcon.Tag);
         }
 
-        private void optionsGroup_Enter(object sender, EventArgs e)
+        private void twitterIcon_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://twitter.com/" + (string)twitterIcon.Tag);
         }
 
-        private void cityBox_TextChanged(object sender, EventArgs e)
+        private void setResultPanelContent(Vendor vendor)
         {
+            resultGroupBox.Visible = true;
 
+            imageBox.ImageLocation = vendor.imageUrl;
+            imageBox.Visible = true;
+
+            nameLabel.Text = "Name: " + vendor.name;
+            descriptionLabel.Text = "Description: " + vendor.description;
+            paymentMethodsLabel.Text = "Payments methods: " + vendor.getReadablePaymentMethods();
+
+            this.setSocialMedia(vendor);
+            
         }
-
-        private void addressGroup_Enter(object sender, EventArgs e)
+        
+        private void setSocialMedia(Vendor vendor)
         {
+            if (vendor.facebook != null)
+            {
+                facebookIcon.Visible = true;
+                facebookIcon.Tag = vendor.facebook;
+            }
+            else
+            {
+                facebookIcon.Visible = false;
+            }
 
-        }
+            if (vendor.instagram != null)
+            {
+                instagramIcon.Visible = true;
+                instagramIcon.Tag = vendor.instagram;
+            }
+            else
+            {
+                instagramIcon.Visible = false;
+            }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label2_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
+            if (vendor.twitter != null)
+            {
+                twitterIcon.Visible = true;
+                twitterIcon.Tag = vendor.twitter;
+            }
+            else
+            {
+                twitterIcon.Visible = false;
+            }
 
         }
     }

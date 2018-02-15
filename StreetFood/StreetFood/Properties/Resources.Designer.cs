@@ -63,9 +63,39 @@ namespace StreetFood.Properties {
         /// <summary>
         ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap facebook_icon {
+            get {
+                object obj = ResourceManager.GetObject("facebook_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap foodtruck_icon {
             get {
                 object obj = ResourceManager.GetObject("foodtruck_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap instagram_icon {
+            get {
+                object obj = ResourceManager.GetObject("instagram_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twitter_icon {
+            get {
+                object obj = ResourceManager.GetObject("twitter_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
